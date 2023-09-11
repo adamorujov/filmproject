@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ <title>{{ category.name }}</title> 
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-3">
+        <h1>Filmlər</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for film in category.films.all %}
+            <div class="col">
+              <div class="card h-100">
+                <img src="{{ film.poster.url }}" class="card-img-top" alt="{{ film.name }}">
+                <div class="card-body">
+                  <h5 class="card-title"><a href="{% url 'detail' film.id %}">{{ film.name }}</a></h5>
+                  <p class="card-text">{{ film.about }}</p>
+                </div>
+                <div class="card-footer">
+                  <small class="text-body-secondary">Last updated {{ film.pub_date | timesince }} ago</small>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+    </div>
+
+{% endblock %}

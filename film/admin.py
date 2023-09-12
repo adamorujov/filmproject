@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.http.request import HttpRequest
 from film.models import FilmModel, ActorModel, CommentModel, LikeModel, Category
 
 
@@ -6,6 +7,10 @@ from film.models import FilmModel, ActorModel, CommentModel, LikeModel, Category
 def change_rating(FilmAdmin, request, queryset=FilmModel.objects.all()):
     queryset.update(rating=0)
 
+
+class CommentAdmin(admin.TabularInline):
+    model = CommentModel
+    extra = 3
 
 @admin.register(FilmModel)
 class FilmAdmin(admin.ModelAdmin):
@@ -29,14 +34,16 @@ class FilmAdmin(admin.ModelAdmin):
         ),
     ]
     actions = [change_rating]
+    inlines = [CommentAdmin]
 
 
 
 # admin.site.register(FilmModel, FilmAdmin)
-admin.site.register(ActorModel)
-admin.site.register(CommentModel)
+admin.admin.register(ActorModel)
+
+
 admin.site.register(LikeModel)
 admin.site.register(Category)
 
-admin.sites.AdminSite.site_title = "Film Administration"
-admin.sites.AdminSite.site_header = "Film Administration"
+admin.sites.AdminSite.site_title = "Film Administrasiyası"
+admin.sites.AdminSite.site_header = "Film Administrasiyası"

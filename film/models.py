@@ -15,6 +15,15 @@ class FilmModel(models.Model):
         verbose_name = "Film"
         verbose_name_plural = "Films"
 
+    def save(self, *args, **kwargs):
+        user = User.objects.first()
+        CommentModel.objects.create(
+            user = user,
+            film = self,
+            comment = "First Comment",
+        )
+        return super(FilmModel, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
     
@@ -31,12 +40,12 @@ class Category(models.Model):
     
 
 class ActorModel(models.Model):
-    name = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
-    birth_date = models.DateField(blank=True, null=True)
+    name = models.CharField(verbose_name="Ad", max_length=100)
+    surname = models.CharField(verbose_name="Soyad", max_length=100)
+    birth_date = models.DateField("Doğum tarixi", blank=True, null=True)
     birth_country = models.CharField(max_length=100, blank=True, null=True)
     about = models.TextField(blank=True, null=True)
-    films = models.ManyToManyField(FilmModel, related_name="actors")
+    films = models.ManyToManyField(FilmModel, verbose_name="Filmlər", related_name="actors")
 
     class Meta:
         verbose_name = "Actor"
